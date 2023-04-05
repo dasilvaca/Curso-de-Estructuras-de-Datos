@@ -20,9 +20,9 @@ Es una forma de describir el tiempo de ejecución de un algoritmo. Más exactame
 ### Clases de notación asintótica
 
 - Notación Big O := O(f(n))
-  Nos brinda una noción de la cantidad de instrucciones que se ejecutan en el peor de los casos. Una función $f(n)$ es $O(g(n))$ si y solo si existe un número $c > 0$ y un número $n0 > 0$ tal que para todo $n > n_0$, $f(n) <= c * g(n)$. En otras palabras, si al multiplicar $g(n)$ por un número $c$, se obtiene un número mayor o igual a $f(n)$ desde un punto hasta el infinito. O sea, la acota superiormente. (O es una función que acota superiormente a $f(n)$).
+  Nos brinda una noción de la cantidad de instrucciones que se ejecutan en el peor de los casos. Una función $f(n)$ es $O(g(n))$ si y solo si existe un número $c > 0$ y un número $n_0 > 0$ tal que para todo $n > n_0$, $f(n) <= c * g(n)$. En otras palabras, si al multiplicar $g(n)$ por un número $c$, se obtiene un número mayor o igual a $f(n)$ desde un punto hasta el infinito. O sea, la acota superiormente. (O es una función que acota superiormente a $f(n)$).
 - Notación Omega := $\Omega$(f(n))
-  Nos brinda una noción de la cantidad de instrucciones que se ejecutan en el mejor de los casos. Una función $f(n)$ es $\Omega(g(n))$ si y solo si existe un número $c > 0$ y un número $n0 > 0$ tal que para todo $n > n0$, $f(n) >= c * g(n)$. En otras palabras, si al multiplicar $g(n)$ por un número $c$, se obtiene un número menor o igual a $f(n)$ desde un punto hasta el infinito. O sea, la acota inferiormente. ($\Omega$ es una función que acota inferiormente a $f(n)$).
+  Nos brinda una noción de la cantidad de instrucciones que se ejecutan en el mejor de los casos. Una función $f(n)$ es $\Omega(g(n))$ si y solo si existe un número $c > 0$ y un número $n_0 > 0$ tal que para todo $n > n_0$, $f(n) >= c * g(n)$. En otras palabras, si al multiplicar $g(n)$ por un número $c$, se obtiene un número menor o igual a $f(n)$ desde un punto hasta el infinito. O sea, la acota inferiormente. ($\Omega$ es una función que acota inferiormente a $f(n)$).
 - Notación Theta := $\Theta$(f(n))
   Es la intersección de las funciones $O$ y $\Omega$. Es decir, es la función que acota superior e inferiormente a $f(n)$.
 
