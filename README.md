@@ -16,6 +16,18 @@ Esta es una guía para principiantes, para el uso correcto de estructuras de dat
   - ¿Por qué usar punteros y cómo son útiles?
   - La notación de punto y flecha (dot and arrow notation)
 - Clases de estructuras de datos
+- Arreglos
+  - Definición
+  - Declaración
+  - Acceso y Modificación
+  - Inserción y eliminación
+  - Algoritmos útiles:
+    - Binary Search
+    - Selection sort
+    - Insertion sort
+    - Bubble sort
+    - Merge sort
+    - Heap sort
 
 ## Qué son estructuras de datos
 
@@ -232,6 +244,8 @@ Asimismo, veremos los siguientes algoritmos de ordenamiento:
 - Bubble sort
 - Merge sort
 - Heap sort
+- Bucket sort
+- Counting sort
 
 Otros algoritmos que veremos son:
 
@@ -381,6 +395,90 @@ for (int i = 0; i < tamaño_arreglo; i++) {
 - [Hackerrank](https://www.hackerrank.com/domains/data-structures?filters%5Bsubdomains%5D%5B%5D=arrays)
 - [CSES](https://cses.fi/problemset/task/1094)
 
+## Algoritmos útiles para arreglos
+
+Nota: Las llamadas "listas" en python, realmente son arreglos dinamicos, por lo que durante la guía se usará el termino "arreglo" para referirse a las listas en python.
+
+Nota2: Estos algoritmos se pueden aplicar tanto en arreglos convencionales como en arreglos dinamicos.
+
+### Búsqueda lineal
+
+Es muy útil para cuando la colección de datos que tenemos __NO__ está ordenada.
+
+Su implementación sería la siguiente:
+
+``` python
+
+def busqueda_lineal(lista, elemento):
+  for i in range(len(lista)):
+      if lista[i] == elemento:
+          return i
+  return None
+```
+
+``` c++
+int busqueda_lineal(int *lista, int elemento, int tamano) {
+  for (int i = 0; i < tamano; i++) {
+    if (lista[i] == elemento) {
+      return i;
+    }
+  }
+  return -1;
+}
+```
+
+Como su nombre lo indica, es de orden lineal, es decir, el tiempo de ejecución es $O(n)$, donde $n$ es el tamaño de la lista.
+
+### Búsqueda binaria
+
+En el caso de que la colección de datos ya se encuentre ordenada, podemos usar la búsqueda binaria, que es mucho más eficiente que la búsqueda lineal.
+
+Su implementación sería la siguiente:
+
+``` python
+def busqueda_binaria(lista, elemento):
+  izquierda = 0
+  derecha = len(lista) - 1
+  while izquierda <= derecha:
+      medio = (izquierda + derecha) // 2
+      if lista[medio] == elemento:
+          return medio
+      elif lista[medio] < elemento:
+          izquierda = medio + 1
+      else:
+          derecha = medio - 1
+  return None
+```
+
+``` c++
+
+int busqueda_binaria(int *lista, int elemento, int tamano) {
+  int izquierda = 0;
+  int derecha = tamano - 1;
+  while (izquierda <= derecha) {
+    int medio = (izquierda + derecha) / 2;
+    if (lista[medio] == elemento) {
+      return medio;
+    } else if (lista[medio] < elemento) {
+      izquierda = medio + 1;
+    } else {
+      derecha = medio - 1;
+    }
+  }
+  return -1;
+}
+```
+
+### Algoritmos de ordenamiento
+
+Como vimos anteriormente, tenemos dos formas de saber si un dato se encuentra dentro de nuestro arreglo o no. Una de orden líneal y otra de orden logarítmico, pero el logaritmico únicamente se puede usar si el conjunto de datos es ordenado.
+
+Entonces, vale la pena preguntarse, por ejemplo, para qué casos es conveniente o no ordenar nuestros datos.
+
+Para ello, supondremos primero, que la cantidad de operaciones que se requieren para el ordenamiento es por lo general de orden $O(n \log n)$, y que la cantidad de operaciones que se requieren para la búsqueda es de orden $O(n)$. Ahora, si solamente quisieramos realizar una consulta sobre un único dato, se requeriría hacer la búsqueda lineal con $O(n)$ operaciones, u ordenar los datos primero y luego hacer la búsqueda binaria con $O(n \log n + \log n) = O(n \log n)$ operaciones. Como podemos observar, la función $O(n) > O(n \log n)$, por lo que en este caso, no es conveniente ordenar los datos.
+
+En cambio, supongamos que tenemos que realizar $m$ consultas sobre los datos. En este caso, si ordenamos los datos, solo tendremos que ordenarlos una vez en $O(n \log n)$ operaciones, y luego podremos realizar las $m$ consultas en $O(m \log n)$ operaciones (Es decir, que en total realizamos $O(n \log n + m \log n$), mientras que si no ordenamos los datos, tendremos que realizar $m$ búsquedas lineales, lo que nos daría un tiempo de ejecución de $O(mn)$ operaciones. Graficando ambas funciones, podemos observar que en este caso, es conveniente ordenar los datos, si m llega a ser un número no despreciable, o incluso si llega a depender de n.
+
 ## Listas
 
 A diferencia de los arreglos, el tamaño de las listas no es fijo, por tanto, cada vez que se necesite almacenar un nuevo elemento, se debe crear un nuevo nodo unicamente para ese elemento, y agregarlo a la lista. Por tanto, el tiempo de ejecución de agregar un elemento a la lista es $O(1)$ si se agrega a la cabecera, o $O(i)$ si lo agregamos en la iesima posición de la lista.
@@ -441,19 +539,40 @@ nodo *head = NULL;
 
 ### Inserción de elementos en una lista
 
-Para insertar un elemento en una lista, debemos crear un nuevo nodo, y asignarle el dato que queremos almacenar. Luego, debemos asignarle el puntero al siguiente nodo, que en este caso, será el nodo que actualmente es la cabeza de la lista. Por último, debemos asignarle el nuevo nodo como la nueva cabeza de la lista.
+Para insertar un elemento en una lista, lo que debemos es encadenar al nuevo nodo. Se puede hacer de dos formas:
+
+Insertar al inicio de la lista:
+
+Debemos crear un nuevo nodo, y asignarle el dato que queremos almacenar. Luego, debemos asignarle el puntero al siguiente nodo, que en este caso, será el nodo que actualmente es la cabeza de la lista. Por último, debemos asignarle el nuevo nodo como la nueva cabeza de la lista.
 
 ```c
-nodo *nuevo_nodo = new nodo;
-nuevo_nodo->dato = dato;
-nuevo_nodo->siguiente = head;
-head = nuevo_nodo;
+void insert(int data, node *head)
+{
+    node *temp = new node(data);
+    temp->next = head;
+    head = temp;
+    return;
+    
+}
 ```
 
 Observemos que el tiempo de ejecución de esta operación es $O(1)$, ya que no depende del tamaño de la lista, y que los datos se guardan con el orden en que fueron ingresados.
 
-Usando menos variables, podemos escribir la inserción de la siguiente manera:
+Insertar en una posición específica de la lista, o incluso al final:
+
+Debemos crear un nuevo nodo, y asignarle el dato que queremos almacenar. Luego, debemos recorrer la lista hasta llegar a la posición en la que queremos insertar el nuevo nodo. Una vez que llegamos a la posición, debemos asignarle el puntero al siguiente nodo, que en este caso, será el nodo que actualmente es el siguiente nodo de la posición en la que queremos insertar el nuevo nodo. Por último, debemos asignarle el nuevo nodo como el siguiente nodo de la posición en la que queremos insertar el nuevo nodo.
 
 ```c
-head -> siguiente = new nodo(head -> siguiente, dato);
+void insert(int data, node *head, int pos)
+{
+    node *temp = new node(data);
+    node *temp2 = head;
+    for(int i = 0; i < pos - 1; i++)
+    {
+        temp2 = temp2->next;
+    }
+    temp->next = temp2->next;
+    temp2->next = temp;
+    return;
+}
 ```
