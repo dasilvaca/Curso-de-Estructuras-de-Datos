@@ -794,6 +794,8 @@ Es similar a una lista, salvo que tiene restricciones fuertes frente a las opera
 
 De hecho, se les conocen como pilas por el hecho de que únicamente apilan o desapilan elementos.
 
+Se basan en el principio LIFO (Last In First Out), es decir, el último elemento que se ingresa es el primero que se saca.
+
 ### Implementación
 
 Como podemos observar, la implementación con nodos, es identica a la de las listas.
@@ -815,3 +817,16 @@ int top = 0;
 ### Operaciones
 
 ```c
+```
+
+## Queues o Colas
+
+Es una estructura de datos lineal, a la cual se accede únicamente por un extremo, el cual se conoce como el frente de la cola. Las operaciones que se pueden realizar son:
+
+- Enqueue: Agregar un elemento a la cola.
+- Dequeue: Eliminar el primer elemento de la cola.
+- Front: Obtener el primer elemento de la cola.
+- Rear: Obtener el último elemento de la cola.
+
+Es similar a una lista, salvo que tiene restricciones fuertes frente a las operaciones que podría realizar. Es decir, sus operaciones siempre se restringen unicamente a el elemento que se encuentra en el frente de la cola. Podemos asociarlo a una fila de personas que esperan su turno para ser atendidos en un banco, donde es más intuitivo entender que se atiende al primero que llegó a esperar su turno, y a medida que llegan personas, se acumulan en la parte de atrás de la fila.
+
