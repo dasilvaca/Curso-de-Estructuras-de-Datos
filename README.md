@@ -539,7 +539,13 @@ nodo *head = NULL;
 
 ### Inserción de elementos en una lista
 
-Para insertar un elemento en una lista, lo que debemos es encadenar al nuevo nodo. Se puede hacer de dos formas:
+Para insertar un elemento en una lista, lo que debemos es encadenar al nuevo nodo. Se puede hacer de varias maneras: al inicio, al final, o en una posición específica, e incluso con un apuntador auxiliar, como lo seríá tail(que apuntaría al último nodo de la lista).
+
+En todos los casos, es claro que debemos crear un nuevo nodo, y asignarle el dato que queremos almacenar. Esto lo haríamos con el constructor del nodo, que recibe como parámetro el dato que queremos almacenar.
+
+```c
+nodo *new_node = new node(dato);
+```
 
 Insertar al inicio de la lista:
 
@@ -576,3 +582,236 @@ void insert(int data, node *head, int pos)
     return;
 }
 ```
+
+El siguiente es un ejemplo con las diferentes implementaciones elaborado en C++:
+
+```c++
+#include <iostream>
+
+using namespace std;
+
+template <typename T>
+struct nodo
+{
+    T dato;
+    nodo<T> *siguiente;
+};
+
+typedef struct node
+{
+    int data;
+    struct node *next;
+
+    node(int data)
+    {
+        this->data = data;
+        this->next = NULL;
+    }
+
+    void insert_at_end(int data) // This costs O(n)
+    {
+
+        node *temp = this;
+        while (temp->next != NULL)
+        {
+            temp = temp->next;
+        }
+        temp->next = new node(data);
+        return;
+    }
+
+    void insert_in_index(int data, int index) // This costs O(n)
+    {
+        if (index == 0)
+        {
+            node *cloned_node = new node(this->data);
+            cloned_node->next = this->next;
+            this->data = data;
+            this->next = cloned_node;
+            return;
+        }
+        node *temp = this;
+        for (int i = 0; i < index - 1; i++)
+        {
+            temp = temp->next;
+        }
+        node *new_node = new node(data);
+        new_node->next = temp->next;
+        temp->next = new_node;
+        return;
+    }
+} node;
+
+void insert_at_end(int data, node *&head) // This costs O(1)
+{
+    if (head == NULL)
+    {
+        head = new node(data);
+        return;
+    }
+    node *temp = head;
+    while (temp->next != NULL)
+    {
+        temp = temp->next;
+    }
+    temp->next = new node(data);
+    return;
+};
+
+void insert_at_end_with_tail(int data, node *&head, node *&tail)
+{
+    if (head == NULL)
+    {
+        head = new node(data);
+        tail = head;
+        return;
+    }
+    tail->next = new node(data);
+    tail = tail->next;
+};
+
+void delete_a_node(int data, node *&head)
+{
+    if (head == NULL)
+    {
+        return;
+    }
+    node *temp = head;
+
+    while (temp->next != NULL && temp->next->data != data)
+    {
+        temp = temp->next;
+    }
+    if (temp->next == NULL)
+    {
+        return;
+    }
+    node * deleted = temp ->next;
+    temp->next = temp->next->next;
+    delete deleted;
+}
+
+void delete_ith_node (int i, node* &head){
+    int data = 0;
+    if (head == NULL)
+    {
+        return;
+    }
+    node *temp = head;
+
+    while (temp->next != NULL && data < i - 1)
+    {
+        temp = temp->next;
+        data ++;
+    }
+    if (temp->next == NULL)
+    {
+        return;
+    }
+    node * deleted = temp ->next;
+    temp->next = temp->next->next;
+    delete deleted;
+}
+
+void insert_at_head(int data, node* &head) // This costs O(1)
+{
+    node *new_node  = new node(data);
+    new_node ->next = head;
+    head = new_node ;
+    return;
+};
+
+int add_1(int a)
+{ // int a = x;
+    return a + 1;
+}
+
+int add_2(int a)
+{
+    return add_1(add_1(a));
+}
+
+void add_3(int &a)
+{
+    a = a + 3;
+}
+
+// TODO: add scopes to the guide
+// TODO: add pass by value and pass by reference to the guide
+
+int main()
+{
+    {
+        int x = 10;
+        cout << add_2(x) << endl; // 12
+        add_3(x);
+        cout << x << endl; // 10
+    }
+    //* Listas simplemente enlazadas SIN APUNTADOR AL FINAL
+    node *head = NULL;
+    insert_at_end(10, head);
+    insert_at_end(20, head);
+    insert_at_end(30, head);
+    insert_at_end(40, head);
+    insert_at_end(50, head);
+    insert_at_end(200, head);
+    insert_at_head(100, head);
+    insert_at_head(1000, head);
+    insert_at_head(10000, head);
+
+    delete_ith_node(3, head);
+
+
+    //! Listas simplemente enlazadas CON APUNTADOR AL FINAL
+    node *head_t = NULL;
+    node *tail = NULL;
+    insert_at_end_with_tail(10, head_t, tail);
+    insert_at_end_with_tail(20, head_t, tail);
+    insert_at_end_with_tail(30, head_t, tail);
+    insert_at_end_with_tail(40, head_t, tail);
+
+    // return 0;
+}
+
+```
+
+### Eliminación de un nodo
+
+```c
+//TODO : add the code
+```
+
+## Stacks o Pilas
+
+Al igual que las listas, son una estructura de datos líneal. Sin embargo, todas las operaciones tienen un costo constante $O(1)$. Las operaciones que se pueden realizar son:
+
+- Push: Agregar un elemento al stack.
+- Pop: Eliminar el último elemento del stack.
+- Top: Obtener el último elemento del stack.
+- Peek: Obtener el elemento en la posición $i$ del stack. (Opcional)
+
+Es similar a una lista, salvo que tiene restricciones fuertes frente a las operaciones que podría realizar. Es decir, sus operaciones siempre se restringen unicamente a el elemento que se encuentra en la cima del stack (o monticulo). Podemos asociarlo a una pila de platos o  de libros. Donde solo podemos manipular el plato o libro que se encuentra en la cima de la pila.
+
+De hecho, se les conocen como pilas por el hecho de que únicamente apilan o desapilan elementos.
+
+### Implementación
+
+Como podemos observar, la implementación con nodos, es identica a la de las listas.
+
+```c
+typedef struct node{
+  int data;
+  struct node *next;
+}
+```
+
+Adicionalmente, podemos implementar un stack, utilizando arreglos, siempre teniendo en cuenta que el tamaño del arreglo sería el tamaño máximo que podría obtener el stack.
+
+```c
+int stack[100];
+int top = 0;
+```
+
+### Operaciones
+
+```c
